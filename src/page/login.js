@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ThemeProvider,
   createTheme,
@@ -9,16 +9,9 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import MyToolBar from "../components/toolBar";
 import { Link } from "react-router-dom";
+import MyToolBar from "../components/toolBar";
 import Footer from "../components/footer";
-
-const Navbar = () => (
-  <nav>
-    <Link to="/">Inicio</Link>
-    <Link to="/login">Login</Link>
-  </nav>
-);
 
 const theme = createTheme({
   palette: {
@@ -28,16 +21,21 @@ const theme = createTheme({
   typography: {
     fontFamily: "Poppins, sans-serif",
   },
-  Link: {
-    color: "#0A0A0A",
-    textDecoration: "none",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  },
 });
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      alert("Por favor completa ambos campos.");
+      return;
+    }
+
+    console.log("Enviando login con:", email, password);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -53,7 +51,6 @@ const Login = () => {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           opacity: 0.9,
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
         }}
       >
         <Container maxWidth="md" sx={{ position: "relative", top: -150 }}>
@@ -74,7 +71,6 @@ const Login = () => {
                 mb: 2,
                 color: "#fff",
                 fontFamily: "ITC Benguiat",
-                fontSize: { xs: "30px", md: "40px" },
               }}
             >
               Iniciar sesión
@@ -82,19 +78,22 @@ const Login = () => {
 
             <TextField
               label="Correo electrónico *"
-              color="#0A0A0A"
               fullWidth
               margin="normal"
               autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               label="Contraseña *"
-              color="#0A0A0A"
               fullWidth
               margin="normal"
               type="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+
             <Button
               variant="contained"
               fullWidth
@@ -109,6 +108,7 @@ const Login = () => {
                   backgroundColor: "#bfa9ff",
                 },
               }}
+              onClick={handleLogin}
             >
               Iniciar sesión
             </Button>
