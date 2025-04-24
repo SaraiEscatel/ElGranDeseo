@@ -9,7 +9,8 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import MyToolBar from "../components/toolBar";
 import Footer from "../components/footer";
 
@@ -26,14 +27,31 @@ const theme = createTheme({
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       alert("Por favor completa ambos campos.");
       return;
     }
 
-    console.log("Enviando login con:", email, password);
+    try {
+      const res = await axios.post("http://localhost:5000/api/login", {
+        email,
+        password,
+      });
+
+      console.log("✅ Inicio de sesión exitoso:", res.data);
+      alert(`¡Bienvenido/a ${res.data.usuario.nombre}!`);
+      navigate("/home"); // Cambia esto a donde quieras redirigir después del login
+    } catch (error) {
+      console.error("❌ Error al iniciar sesión:", error);
+      if (error.response) {
+        alert(error.response.data.error);
+      } else {
+        alert("No se pudo conectar con el servidor.");
+      }
+    }
   };
 
   return (
