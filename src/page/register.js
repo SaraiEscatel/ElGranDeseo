@@ -10,11 +10,14 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Footer from "../components/footer";
+import axios from "axios";
 
 const theme = createTheme({
   palette: {
@@ -72,13 +75,11 @@ const theme = createTheme({
 const Register = () => {
   const [terms, setTerms] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const Navbar = () => (
-    <nav>
-      <Link to="/">Inicio</Link>
-      <Link to="/register">Productos</Link>
-    </nav>
-  );
+  const [mensaje, setMensaje] = useState({
+    text: "",
+    type: "success",
+    open: false,
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -106,17 +107,40 @@ const Register = () => {
     }),
     onSubmit: async (values) => {
       if (!terms) {
-        alert("Debes aceptar los términos y condiciones");
+        setMensaje({
+          text: "Debes aceptar los términos",
+          type: "error",
+          open: true,
+        });
         return;
       }
 
       try {
         setIsSubmitting(true);
-        console.log("Datos listos para enviar:", values);
-        alert("¡Usuario registrado con éxito (modo prueba)!");
+        const response = await axios.post(
+          "http://localhost:5000/api/usuarios",
+          {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            password: values.password1,
+          }
+        );
+
+        setMensaje({
+          text: `Usuario ${response.data.nombre} registrado`,
+          type: "success",
+          open: true,
+        });
+        formik.resetForm();
+        setTerms(false);
       } catch (error) {
-        console.error("Error simulado", error);
-        alert("Error simulado en el registro.");
+        console.error(error);
+        setMensaje({
+          text: "Error al registrar usuario",
+          type: "error",
+          open: true,
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -170,67 +194,41 @@ const Register = () => {
           }}
         >
           <TextField
+            {...formik.getFieldProps("first_name")}
             fullWidth
-            name="first_name"
             label="Nombre"
-            variant="outlined"
-            value={formik.values.first_name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={
               formik.touched.first_name && Boolean(formik.errors.first_name)
             }
             helperText={formik.touched.first_name && formik.errors.first_name}
           />
-
           <TextField
+            {...formik.getFieldProps("last_name")}
             fullWidth
-            name="last_name"
             label="Apellido"
-            variant="outlined"
-            value={formik.values.last_name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.touched.last_name && Boolean(formik.errors.last_name)}
             helperText={formik.touched.last_name && formik.errors.last_name}
           />
-
           <TextField
+            {...formik.getFieldProps("email")}
             fullWidth
-            name="email"
             label="Correo Electrónico"
-            variant="outlined"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
-            autoCapitalize="off"
           />
-
           <TextField
+            {...formik.getFieldProps("password1")}
             fullWidth
             type="password"
-            name="password1"
             label="Contraseña"
-            variant="outlined"
-            value={formik.values.password1}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.touched.password1 && Boolean(formik.errors.password1)}
             helperText={formik.touched.password1 && formik.errors.password1}
-            autoComplete="new-password"
           />
-
           <TextField
+            {...formik.getFieldProps("password2")}
             fullWidth
             type="password"
-            name="password2"
             label="Confirmar Contraseña"
-            variant="outlined"
-            value={formik.values.password2}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             error={formik.touched.password2 && Boolean(formik.errors.password2)}
             helperText={formik.touched.password2 && formik.errors.password2}
           />
@@ -276,6 +274,20 @@ const Register = () => {
       </Box>
 
       <Footer />
+
+      <Snackbar
+        open={mensaje.open}
+        autoHideDuration={6000}
+        onClose={() => setMensaje({ ...mensaje, open: false })}
+      >
+        <Alert
+          onClose={() => setMensaje({ ...mensaje, open: false })}
+          severity={mensaje.type}
+          sx={{ width: "100%" }}
+        >
+          {mensaje.text}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 };
