@@ -1,24 +1,14 @@
 import React from "react";
-import {
-  AppBar,
-  IconButton,
-  Menu,
-  Toolbar,
-  Box,
-  Typography,
-  Button,
-  Container,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import { AppBar, IconButton, Toolbar, Box, Button } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const MyButton = ({ text, to }) => {
+const MyButton = ({ text, to, onClick }) => {
   return (
     <Button
-      component={Link}
+      component={to ? Link : "button"}
       to={to}
+      onClick={onClick}
       variant="h6"
       sx={{
         flexGrow: 1,
@@ -26,6 +16,7 @@ const MyButton = ({ text, to }) => {
         fontSize: 23,
         fontWeight: 60,
         ml: 5,
+        textTransform: "none",
       }}
     >
       {text}
@@ -34,6 +25,15 @@ const MyButton = ({ text, to }) => {
 };
 
 const MyToolBar = () => {
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("usuario");
+    navigate("/");
+    window.location.reload();
+  };
+
   return (
     <AppBar
       position="static"
@@ -67,24 +67,21 @@ const MyToolBar = () => {
             mt: 4,
           }}
         >
-          <Box>
-            <MyButton text="Inicio" to="/" />
-          </Box>
-          <Box>
-            <MyButton text="Productos" to="/productos" />
-          </Box>
-          <Box>
-            <MyButton text="Nosotros" to="/nosotros" />
-          </Box>
-          <Box>
-            <MyButton text="Pedidos" to="/pedidos" />
-          </Box>
-          <Box>
-            <MyButton text="Iniciar Sesion" to="/login" />
-          </Box>
-          <Box>
-            <MyButton text="Register" to="/register" />
-          </Box>
+          <MyButton text="Inicio" to="/" />
+          <MyButton text="Productos" to="/productos" />
+          <MyButton text="Nosotros" to="/nosotros" />
+          <MyButton text="Pedidos" to="/pedidos" />
+          {!usuario ? (
+            <>
+              <MyButton text="Iniciar Sesión" to="/login" />
+              <MyButton text="Registrarse" to="/register" />
+            </>
+          ) : (
+            <>
+              <MyButton text={`Hola, ${usuario.nombre}`} />
+              <MyButton text="Cerrar sesión" onClick={handleLogout} />
+            </>
+          )}
         </Box>
 
         <IconButton sx={{ color: "#101010", fontSize: 50, mt: 3 }}>
