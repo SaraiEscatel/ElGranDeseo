@@ -8,8 +8,11 @@ import {
   Typography,
   TextField,
   Button,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import MyToolBar from "../components/toolBar";
 import Footer from "../components/footer";
 
@@ -26,20 +29,54 @@ const theme = createTheme({
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState("success");
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
-      alert("Por favor completa ambos campos.");
+      mostrarMensaje("Por favor completa ambos campos.", "error");
       return;
     }
 
-    console.log("Enviando login con:", email, password);
+    try {
+      const res = await axios.post("http://localhost:5000/api/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+      mostrarMensaje(`¡Bienvenido/a ${res.data.usuario.nombre}!`, "success");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      if (error.response) {
+        mostrarMensaje(error.response.data.error, "error");
+      } else {
+        mostrarMensaje("No se pudo conectar con el servidor.", "error");
+      }
+    }
+  };
+
+  const mostrarMensaje = (texto, tipo) => {
+    setMensaje(texto);
+    setTipoMensaje(tipo);
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") return;
+    setOpen(false);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <MyToolBar />
+
       <Box
         sx={{
           minHeight: "100vh",
@@ -125,6 +162,23 @@ const Login = () => {
           </Box>
         </Container>
       </Box>
+
+      {/* Snackbar de mensaje */}
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          severity={tipoMensaje}
+          onClose={handleClose}
+          sx={{ width: "100%" }}
+        >
+          {mensaje}
+        </Alert>
+      </Snackbar>
+
       <Footer />
     </ThemeProvider>
   );
