@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   IconButton,
-  Menu,
   Toolbar,
   Box,
   Typography,
   Button,
-  Container,
+  Badge, // <-- Aquí está bien
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
+import { useCart } from "./cartContext"; // 👈 Esto está bien
 
 const MyButton = ({ text, to }) => {
   return (
@@ -34,64 +32,68 @@ const MyButton = ({ text, to }) => {
 };
 
 const MyToolBar = () => {
-  return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: "#d9dad8", height: "15vh" }}
-    >
-      <Toolbar>
-        <Box
-          sx={{
-            width: "80px",
-            height: "80px",
-            display: "flex",
-            alignItems: "center",
-            position: "relative",
-            top: "20px",
-          }}
-        >
-          <img
-            src="img/logo.png"
-            alt="logo"
-            style={{ maxWidth: "120%", height: "auto", borderRadius: "50%" }}
-          />
-        </Box>
+  const [mostrarCarrito, setMostrarCarrito] = useState(false);
 
-        <Box
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignContent: "center",
-            ml: 2,
-            mt: 4,
-          }}
-        >
-          <Box>
+  const { cartItems } = useCart();
+
+  const handleOpenCarrito = () => {
+    window.open("/carrito", "_blank");
+  };
+
+  return (
+    <>
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: "#d9dad8", height: "15vh" }}
+      >
+        <Toolbar>
+          <Box
+            sx={{
+              width: "80px",
+              height: "80px",
+              display: "flex",
+              alignItems: "center",
+              position: "relative",
+              top: "20px",
+            }}
+          >
+            <img
+              src="img/logo.png"
+              alt="logo"
+              style={{ maxWidth: "120%", height: "auto", borderRadius: "50%" }}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              ml: 2,
+              mt: 4,
+            }}
+          >
             <MyButton text="Inicio" to="/" />
-          </Box>
-          <Box>
             <MyButton text="Productos" to="/productos" />
-          </Box>
-          <Box>
             <MyButton text="Nosotros" to="/nosotros" />
-          </Box>
-          <Box>
             <MyButton text="Pedidos" to="/pedidos" />
-          </Box>
-          <Box>
             <MyButton text="Iniciar Sesion" to="/login" />
-          </Box>
-          <Box>
             <MyButton text="Register" to="/register" />
           </Box>
-        </Box>
 
-        <IconButton sx={{ color: "#101010", fontSize: 50, mt: 3 }}>
-          <ShoppingCartIcon sx={{ color: "#101010", fontSize: 50 }} />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+          <IconButton
+            edge="end"
+            sx={{ color: "#101010", fontSize: 50, mt: 3 }}
+            onClick={handleOpenCarrito}
+          >
+            <Badge badgeContent={cartItems.length} color="error">
+              <ShoppingCartIcon sx={{ color: "#101010", fontSize: 50 }} />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
 

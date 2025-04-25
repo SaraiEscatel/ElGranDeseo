@@ -125,6 +125,8 @@ const HomePage = () => {
                     {producto.descripcion}
                   </Typography>
                   <Button
+                    component={Link}
+                    to="/productos"
                     variant="outlined"
                     size="small"
                     sx={{
