@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+const productoRoutes = require("./routes/productoRoutes");
+
 
 // Middleware
 app.use(cors());
@@ -22,6 +24,7 @@ mongoose
 // Rutas
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes); // <--- Montamos las rutas de usuario/login
+app.use("/api", productoRoutes); // Ruta para productos
 
 // Middleware global de errores
 app.use((err, req, res, next) => {
