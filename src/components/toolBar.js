@@ -8,7 +8,7 @@ import {
   Button,
   Badge,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "./cartContext";
 
@@ -105,7 +105,7 @@ const MyToolBar = () => {
           onClick={handleOpenCarrito}
         >
           <Badge badgeContent={cartItems.length} color="error">
-            <ShoppingCartIcon sx={{ color: "#101010", fontSize: 50 }} />
+            <ShoppingBagIcon sx={{ color: "#101010", fontSize: 50 }} />
           </Badge>
         </IconButton>
       </Toolbar>

@@ -42,13 +42,13 @@ const ManualCarousel = () => {
         src={images[currentIndex]}
         alt={`Slide ${currentIndex}`}
         sx={{
-          width: "70vw",
+          width: "99.6vw",
           maxHeight: "900px",
           objectFit: "cover",
           borderRadius: 2,
           position: "relative",
-          right: "350px",
-          top: -1,
+          right: "650px",
+          top: -20,
           opacity: 0.9,
           transition: "opacity 0.5s ease-in-out",
         }}
