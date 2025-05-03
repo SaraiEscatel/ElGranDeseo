@@ -61,108 +61,113 @@ const HomePage = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
 
+      <MyToolBar />
+
       <Box
         sx={{
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "background.default",
+          paddingTop: "-2vh",
         }}
       >
-        <MyToolBar />
+        <ManualCarousel />
 
         <Box
-          sx={{
-            minHeight: "100vh",
-            backgroundColor: "background.default",
-            padding: "20px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
+          sx={{ my: 6, textAlign: "center", backgroundColor: "#000", mt: 6 }}
         >
-          <ManualCarousel />
-
-          <Box
-            sx={{ my: 6, textAlign: "center", backgroundColor: "#000", mt: 6 }}
+          <Typography
+            variant="h4"
+            color="white"
+            textAlign="center"
+            gutterBottom
+            sx={{ fontFamily: "ITC Benguiat" }}
           >
-            <Typography
-              variant="h4"
-              color="white"
-              textAlign="center"
-              gutterBottom
-            >
-              Porque cada joya cuenta una historia… haz que la tuya brille.
-            </Typography>
-            <Grid container spacing={4} justifyContent="center">
-              {productos.map((producto) => (
-                <Grid key={producto} item xs={12} sm={6} md={4}>
-                  <Box
-                    sx={{
-                      backgroundColor: "#0A0A0A",
-                      borderRadius: 2,
-                      padding: 2,
-                      textAlign: "center",
-                    }}
-                  >
-                    <Box sx={{ my: 6, textAlign: "center" }}>
-                      <Typography variant="h4" color="white" gutterBottom>
-                        {producto.nombre}
-                      </Typography>
-                      <video
-                        width="80%"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        style={{ borderRadius: "8px" }}
-                      >
-                        <source src={producto.video} type="video/mp4" />
-                        Tu navegador no soporta el video.
-                      </video>
-                    </Box>
-
-                    <Typography
-                      variant="body2"
-                      color="whilete"
-                      mb={2}
-                      fontSize={16}
-                    >
-                      {producto.descripcion}
+            Porque cada joya cuenta una historia… haz que la tuya brille.
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
+            {productos.map((producto) => (
+              <Grid key={producto.id} item xs={12} sm={6} md={4}>
+                <Box
+                  sx={{
+                    backgroundColor: "#0A0A0A",
+                    borderRadius: 2,
+                    padding: 2,
+                    textAlign: "center",
+                  }}
+                >
+                  <Box sx={{ my: 6, textAlign: "center" }}>
+                    <Typography variant="h4" color="white" gutterBottom>
+                      {producto.nombre}
                     </Typography>
-                    <Button
-                      component={Link}
-                      to="/productos"
-                      variant="outlined"
-                      size="small"
-                      sx={{
-                        mt: 1,
-                        color: "white",
-                        borderColor: "white",
-                        borderRadius: 5,
+                    <video
+                      ref={(ref) => (producto.videoRef = ref)}
+                      width="80%"
+                      muted
+                      playsInline
+                      style={{ borderRadius: "8px" }}
+                      onMouseEnter={() => {
+                        producto.videoRef && producto.videoRef.play();
+                      }}
+                      onMouseLeave={() => {
+                        if (producto.videoRef) {
+                          producto.videoRef.pause();
+                          producto.videoRef.currentTime = 0;
+                        }
                       }}
                     >
-                      Ver más
-                    </Button>
+                      <source src={producto.video} type="video/mp4" />
+                      Tu navegador no soporta el video.
+                    </video>
                   </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
 
-          <Box sx={{ textAlign: "center", my: 4 }}>
-            <Typography variant="h5" color="white">
-              ¿Tienes dudas? ¡Contáctanos!
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              +52 33 16 72 87 06 | contacto@elgrandeseo.com
-            </Typography>
-          </Box>
+                  <Typography
+                    variant="body2"
+                    color="white"
+                    mb={2}
+                    fontSize={16}
+                  >
+                    {producto.descripcion}
+                  </Typography>
+                  <Button
+                    component={Link}
+                    to="/productos"
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      mt: 1,
+                      color: "white",
+                      borderColor: "white",
+                      borderRadius: 5,
+                      fontFamily: "ITC Benguiat",
+                      fontSize: 15,
+                    }}
+                  >
+                    Descubre más
+                  </Button>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
 
-        <Box sx={{ flexGrow: 1, padding: "20px" }}></Box>
-        <Footer />
+        {/* Sección de contacto */}
+        <Box sx={{ textAlign: "center", my: 4 }}>
+          <Typography
+            variant="h5"
+            color="white"
+            sx={{ fontFamily: "ITC Benguiat", fontSize: 30 }}
+          >
+            ¿Tienes dudas? ¡Contáctanos!
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            +52 33 16 72 87 06 | contacto@elgrandeseo.com
+          </Typography>
+        </Box>
       </Box>
+
+      <Footer />
     </ThemeProvider>
   );
 };

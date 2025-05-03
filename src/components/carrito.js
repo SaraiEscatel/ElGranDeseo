@@ -13,7 +13,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "./cartContext";
 import MyToolBar from "../components/toolBar";
 import Footer from "../components/footer";
-import { Link } from "react-router-dom";
 import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
 
 const darkTheme = createTheme({
@@ -38,7 +37,18 @@ const darkTheme = createTheme({
 
 const Carrito = () => {
   const { cartItems, removeFromCart } = useCart();
-  const theme = useTheme(); // para acceder al tema dentro del componente
+  const theme = useTheme();
+
+  const calcularTotal = () => {
+    return cartItems.reduce((total, producto) => {
+      if (producto.precio && producto.cantidad) {
+        return total + producto.precio * producto.cantidad;
+      }
+      return total;
+    }, 0);
+  };
+
+  const total = calcularTotal();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -89,7 +99,10 @@ const Carrito = () => {
                         {producto.descripcion}
                       </Typography>
                       <Typography variant="subtitle1" sx={{ mt: 1 }}>
-                        {producto.precio}
+                        Precio: ${producto.precio} x {producto.cantidad}
+                      </Typography>
+                      <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                        Subtotal: ${producto.precio * producto.cantidad}
                       </Typography>
                       <IconButton
                         onClick={() => removeFromCart(index)}
@@ -106,6 +119,9 @@ const Carrito = () => {
 
           {cartItems.length > 0 && (
             <Box mt={4}>
+              <Typography variant="h6" color="text.primary">
+                Total: ${total.toFixed(2)}
+              </Typography>
               <Button
                 variant="contained"
                 color="primary"

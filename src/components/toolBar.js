@@ -11,6 +11,7 @@ import {
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "./cartContext";
+import { useLocation } from "react-router-dom";
 
 const MyButton = ({ text, to, onClick }) => {
   return (
@@ -49,10 +50,16 @@ const MyToolBar = () => {
     window.location.reload();
   };
 
+  const [hover, setHover] = useState(false);
+
+  const location = useLocation();
+
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#d9dad8", height: "15vh" }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      sx={{ backgroundColor: "#d9dad8", height: "13vh" }}
     >
       <Toolbar>
         <Box
@@ -80,6 +87,8 @@ const MyToolBar = () => {
             alignContent: "center",
             ml: 2,
             mt: 4,
+            opacity: hover ? 1 : 0,
+            transition: "opacity 0.5s ease-in-out",
           }}
         >
           <MyButton text="Inicio" to="/" />
@@ -97,17 +106,28 @@ const MyToolBar = () => {
               <MyButton text="Cerrar sesión" onClick={handleLogout} />
             </>
           )}
+          {location.pathname !== "/register" && (
+            <IconButton
+              edge="end"
+              sx={{ color: "#101010", fontSize: 50, mt: -2 }}
+              onClick={handleOpenCarrito}
+            >
+              <Badge
+                badgeContent={cartItems.length}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    right: 4,
+                    top: 4,
+                    backgroundColor: "#D4AF37",
+                    color: "#000",
+                  },
+                }}
+              >
+                <ShoppingBagIcon sx={{ color: "#101010", fontSize: 50 }} />
+              </Badge>
+            </IconButton>
+          )}
         </Box>
-
-        <IconButton
-          edge="end"
-          sx={{ color: "#101010", fontSize: 50, mt: 3 }}
-          onClick={handleOpenCarrito}
-        >
-          <Badge badgeContent={cartItems.length} color="error">
-            <ShoppingBagIcon sx={{ color: "#101010", fontSize: 50 }} />
-          </Badge>
-        </IconButton>
       </Toolbar>
     </AppBar>
   );

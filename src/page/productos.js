@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ThemeProvider,
   createTheme,
@@ -10,11 +10,12 @@ import {
   CardContent,
   CardMedia,
   Button,
+  IconButton,
 } from "@mui/material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import MyToolBar from "../components/toolBar";
 import Footer from "../components/footer";
 import { useCart } from "../components/cartContext";
-//
 
 const darkTheme = createTheme({
   palette: {
@@ -28,89 +29,108 @@ const productos = [
     nombre: "Anillo Solitario",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin.jpg",
-    precio: "$100",
+
+    precio: 320,
   },
   {
     id: 2,
     nombre: "Aretes de Copos de nieve",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin3.jpg",
-    precio: "$100",
+    precio: 260,
   },
   {
     id: 3,
     nombre: "Aretes de perlas",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin4.jpg",
-    precio: "$100",
+
+    precio: 150,
   },
   {
     id: 4,
     nombre: "Anillo Solitario",
     descripcion: "Descripción del producto 1.",
     imagen: "img/1image.jpg",
-    precio: "$100",
+
+    precio: 250,
   },
   {
     id: 5,
     nombre: "Aretes de Copos de nieve",
     descripcion: "Descripción del producto 1.",
     imagen: "img/2image.jpg",
-    precio: "$100",
+
+    precio: 320,
   },
   {
     id: 6,
     nombre: "Aretes de perlas",
     descripcion: "Descripción del producto 1.",
     imagen: "img/3image.jpg",
-    precio: "$100",
+
+    precio: 120,
   },
   {
     id: 7,
     nombre: "Anillo Solitario",
     descripcion: "Descripción del producto 1.",
     imagen: "img/4image.jpg",
-    precio: "$100",
+
+    precio: 190,
   },
   {
     id: 8,
     nombre: "Aretes de Copos de nieve",
     descripcion: "Descripción del producto 1.",
     imagen: "img/5image.jpg",
-    precio: "$100",
+
+    precio: 260,
   },
   {
     id: 9,
     nombre: "Aretes de perlas",
     descripcion: "Descripción del producto 1.",
-    imagen: "img/imge 6.jpg",
-    precio: "$100",
+    imagen: "img/imge6.jpg",
+
+    precio: 165,
   },
   {
     id: 10,
     nombre: "Anillo Solitario",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin.jpg",
-    precio: "$100",
+
+    precio: 850,
   },
   {
     id: 11,
     nombre: "Aretes de Copos de nieve",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin3.jpg",
-    precio: "$100",
+
+    precio: 420,
   },
   {
     id: 12,
     nombre: "Aretes de perlas",
     descripcion: "Descripción del producto 1.",
     imagen: "img/imgLogin4.jpg",
-    precio: "$100",
+
+    precio: 130,
   },
 ];
 
 const Productos = () => {
   const { addToCart } = useCart();
+  const [favoritos, setFavoritos] = useState([]);
+
+  const toggleFavorito = (id) => {
+    setFavoritos((prev) =>
+      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
+    );
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -140,7 +160,26 @@ const Productos = () => {
         <Grid container spacing={3} mt={2}>
           {productos.map((producto) => (
             <Grid item xs={12} sm={6} md={4} key={producto.id}>
-              <Card sx={{ height: "100%" }}>
+              <Card sx={{ height: "100%", position: "relative" }}>
+                <IconButton
+                  onClick={() => toggleFavorito(producto.id)}
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    color: favoritos.includes(producto.id)
+                      ? "red"
+                      : "rgba(255,255,255,0.6)",
+                    zIndex: 1,
+                  }}
+                >
+                  {favoritos.includes(producto.id) ? (
+                    <Favorite />
+                  ) : (
+                    <FavoriteBorder />
+                  )}
+                </IconButton>
+
                 <CardMedia
                   component="img"
                   height="300"

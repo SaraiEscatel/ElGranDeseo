@@ -83,21 +83,26 @@ const Login = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          backgroundImage: "url('/img/imgLogin2.jpg')",
+          backgroundImage: "url('img/fonfoLogin.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           opacity: 0.9,
+          px: 2,
         }}
       >
-        <Container maxWidth="md" sx={{ position: "relative", top: -150 }}>
+        <Container
+          maxWidth="md"
+          sx={{ width: { xs: "100%", sm: "80%", md: "70%" } }}
+        >
           <Box
             sx={{
-              p: 4,
-              borderRadius: 1,
+              p: { xs: 2, sm: 4 },
+              borderRadius: 2,
               backgroundColor: "rgba(18, 18, 18, 0.1)",
               boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
               backdropFilter: "blur(6px)",
+              width: "100%",
             }}
           >
             <Typography
@@ -105,9 +110,10 @@ const Login = () => {
               align="center"
               sx={{
                 fontWeight: 600,
-                mb: 2,
+                mb: { xs: 2, sm: 3 },
                 color: "#fff",
                 fontFamily: "ITC Benguiat",
+                fontSize: { xs: "1.4rem", sm: "2rem" },
               }}
             >
               Iniciar sesión
@@ -120,6 +126,9 @@ const Login = () => {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              InputLabelProps={{
+                sx: { fontSize: { xs: "0.9rem", sm: "1rem" } },
+              }}
             />
             <TextField
               label="Contraseña *"
@@ -129,20 +138,24 @@ const Login = () => {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              InputLabelProps={{
+                sx: { fontSize: { xs: "0.9rem", sm: "1rem" } },
+              }}
             />
 
             <Button
               variant="contained"
               fullWidth
               sx={{
-                mt: 2,
+                mt: 3,
                 borderRadius: 5,
-                py: 1.2,
+                py: { xs: 1, sm: 1.2 },
                 backgroundColor: "#C7B9FF",
                 color: "black",
                 fontWeight: 600,
+                fontSize: { xs: "0.9rem", sm: "1rem" },
                 "&:hover": {
-                  backgroundColor: "#bfa9ff",
+                  backgroundColor: "#C7B9FF",
                 },
               }}
               onClick={handleLogin}
@@ -150,7 +163,14 @@ const Login = () => {
               Iniciar sesión
             </Button>
 
-            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+            <Typography
+              variant="body2"
+              align="center"
+              sx={{
+                mt: 3,
+                fontSize: { xs: "0.85rem", sm: "1rem" },
+              }}
+            >
               ¿No tienes una cuenta?{" "}
               <Link
                 to="/register"
@@ -163,7 +183,6 @@ const Login = () => {
         </Container>
       </Box>
 
-      {/* Snackbar de mensaje */}
       <Snackbar
         open={open}
         autoHideDuration={3000}
