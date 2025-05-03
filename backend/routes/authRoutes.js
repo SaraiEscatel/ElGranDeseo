@@ -21,12 +21,17 @@ router.post("/usuarios", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Si el correo termina en @grandeseo.com, es administrador automáticamente
+    const esAdmin = email.toLowerCase().endsWith("@grandeseo.com");
+
     const nuevoUsuario = new Usuario({
       first_name,
       last_name,
       email,
       password: hashedPassword,
+      isAdmin: esAdmin,
     });
+
     await nuevoUsuario.save();
 
     res.status(201).json(nuevoUsuario);
@@ -51,13 +56,17 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
+    const rutaDestino = usuario.isAdmin ? "/admin" : "/";
+
     res.status(200).json({
       mensaje: "Inicio de sesión exitoso",
       usuario: {
         id: usuario._id,
         nombre: usuario.first_name,
         email: usuario.email,
+        isAdmin: usuario.isAdmin,
       },
+      redireccion: rutaDestino,
     });
   } catch (error) {
     console.error("❌ Error al iniciar sesión:", error.message, error.stack);
