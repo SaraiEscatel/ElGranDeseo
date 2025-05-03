@@ -50,7 +50,7 @@ const Login = () => {
       mostrarMensaje(`¡Bienvenido/a ${res.data.usuario.nombre}!`, "success");
 
       setTimeout(() => {
-        navigate("/");
+        navigate(res.data.redireccion);
       }, 1500);
     } catch (error) {
       if (error.response) {
