@@ -5,17 +5,17 @@ const Producto = require("../models/producto");
 // Crear producto
 router.post("/producto", async (req, res) => {
   try {
-    const { product_name, description, cost, price, stock, image } = req.body;
+    const { nombre, descripcion, costo, precio, cantidad, imagen } = req.body;
 
     const nuevoProducto = new Producto({
-      product_name,
-      description,
-      cost,
-      price,
-      stock,
-      image,
+      nombre,
+      descripcion,
+      costo,
+      precio,
+      cantidad,
+      imagen,
     });
-
+    console.log("🔎 req.body recibido:", req.body); // 
     await nuevoProducto.save();
 
     res.status(201).json(nuevoProducto);
