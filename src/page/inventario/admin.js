@@ -52,9 +52,9 @@ const Admin = () => {
 
   const exportarAExcel = () => {
     const datos = productos.map(
-      ({ nombre, codigo, tipo, descripcion, precio, stock }) => ({
+      ({ nombre, tipo, descripcion, precio, stock }) => ({
         nombre,
-        codigo,
+
         tipo,
         descripcion,
         precio,
@@ -78,17 +78,10 @@ const Admin = () => {
   const exportarAPDF = () => {
     const doc = new jsPDF();
     doc.text("Inventario Joyería de Plata", 14, 10);
-    const columnas = [
-      "Nombre",
-      "Código",
-      "Tipo",
-      "Descripción",
-      "Precio",
-      "Stock",
-    ];
+    const columnas = ["Nombre", "Tipo", "Descripción", "Precio", "Stock"];
     const filas = productos.map((p) => [
       p.nombre,
-      p.codigo,
+
       p.tipo,
       p.descripcion,
       p.precio,
@@ -145,7 +138,7 @@ const Admin = () => {
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>
-              <TableCell>Código</TableCell>
+
               <TableCell>Tipo</TableCell>
               <TableCell>Descripción</TableCell>
               <TableCell>Precio ($)</TableCell>
@@ -157,7 +150,7 @@ const Admin = () => {
             {productosFiltrados.map((producto) => (
               <TableRow key={producto.id}>
                 <TableCell>{producto.nombre}</TableCell>
-                <TableCell>{producto.codigo}</TableCell>
+
                 <TableCell>{producto.tipo}</TableCell>
                 <TableCell>{producto.descripcion}</TableCell>
                 <TableCell>{producto.precio}</TableCell>
