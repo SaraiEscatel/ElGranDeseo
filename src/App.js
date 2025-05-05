@@ -8,6 +8,7 @@ import Login from "./page/login";
 import Register from "./page/register";
 import { CartProvider } from "./components/cartContext";
 import Carrito from "./components/carrito";
+import Admin from "./page/inventario/admin";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/carrito" element={<Carrito />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </CartProvider>
     </BrowserRouter>

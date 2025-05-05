@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ThemeProvider,
   createTheme,
@@ -23,107 +23,17 @@ const darkTheme = createTheme({
   },
 });
 
-const productos = [
-  {
-    id: 1,
-    nombre: "Anillo Solitario",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin.jpg",
-
-    precio: 320,
-  },
-  {
-    id: 2,
-    nombre: "Aretes de Copos de nieve",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin3.jpg",
-    precio: 260,
-  },
-  {
-    id: 3,
-    nombre: "Aretes de perlas",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin4.jpg",
-
-    precio: 150,
-  },
-  {
-    id: 4,
-    nombre: "Anillo Solitario",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/1image.jpg",
-
-    precio: 250,
-  },
-  {
-    id: 5,
-    nombre: "Aretes de Copos de nieve",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/2image.jpg",
-
-    precio: 320,
-  },
-  {
-    id: 6,
-    nombre: "Aretes de perlas",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/3image.jpg",
-
-    precio: 120,
-  },
-  {
-    id: 7,
-    nombre: "Anillo Solitario",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/4image.jpg",
-
-    precio: 190,
-  },
-  {
-    id: 8,
-    nombre: "Aretes de Copos de nieve",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/5image.jpg",
-
-    precio: 260,
-  },
-  {
-    id: 9,
-    nombre: "Aretes de perlas",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imge6.jpg",
-
-    precio: 165,
-  },
-  {
-    id: 10,
-    nombre: "Anillo Solitario",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin.jpg",
-
-    precio: 850,
-  },
-  {
-    id: 11,
-    nombre: "Aretes de Copos de nieve",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin3.jpg",
-
-    precio: 420,
-  },
-  {
-    id: 12,
-    nombre: "Aretes de perlas",
-    descripcion: "Descripción del producto 1.",
-    imagen: "img/imgLogin4.jpg",
-
-    precio: 130,
-  },
-];
-
 const Productos = () => {
   const { addToCart } = useCart();
   const [favoritos, setFavoritos] = useState([]);
+
+  const [productos, setProductos] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/productos")
+      .then((res) => res.json())
+      .then((data) => setProductos(data));
+  }, []);
 
   const toggleFavorito = (id) => {
     setFavoritos((prev) =>
