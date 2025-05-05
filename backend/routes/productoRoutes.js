@@ -15,7 +15,7 @@ router.post("/producto", async (req, res) => {
       cantidad,
       imagen,
     });
-    console.log("🔎 req.body recibido:", req.body); // 
+    console.log("🔎 req.body recibido:", req.body);
     await nuevoProducto.save();
 
     res.status(201).json(nuevoProducto);
