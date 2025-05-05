@@ -5,10 +5,11 @@ const Producto = require("../models/producto");
 // Crear producto
 router.post("/producto", async (req, res) => {
   try {
-    const { nombre, descripcion, costo, precio, cantidad, imagen } = req.body;
+    const { nombre, tipo, descripcion, costo, precio, cantidad, imagen } = req.body;
 
     const nuevoProducto = new Producto({
       nombre,
+      tipo,
       descripcion,
       costo,
       precio,
