@@ -30,8 +30,8 @@ const Menu = ({ onNavigate }) => {
 
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: "#fff" }}>
-        <Toolbar>
+      <AppBar position="static">
+        <Toolbar sx={{ width: "100%", backgroundColor: "#fff" }}>
           <IconButton color="#fff" onClick={toggleDrawer} edge="start">
             <MenuIcon />
           </IconButton>
