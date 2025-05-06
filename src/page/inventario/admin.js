@@ -81,9 +81,9 @@ const Admin = () => {
     const columnas = ["Nombre", "Tipo", "Descripción", "Precio", "Stock"];
     const filas = productos.map((p) => [
       p.nombre,
-
       p.tipo,
       p.descripcion,
+      p.costo,
       p.precio,
       p.stock,
     ]);
@@ -141,6 +141,7 @@ const Admin = () => {
 
               <TableCell>Tipo</TableCell>
               <TableCell>Descripción</TableCell>
+              <TableCell>Costo ($)</TableCell>
               <TableCell>Precio ($)</TableCell>
               <TableCell>Stock</TableCell>
               <TableCell>Acciones</TableCell>
@@ -153,6 +154,7 @@ const Admin = () => {
 
                 <TableCell>{producto.tipo}</TableCell>
                 <TableCell>{producto.descripcion}</TableCell>
+                <TableCell>{producto.costo}</TableCell>
                 <TableCell>{producto.precio}</TableCell>
                 <TableCell>{producto.stock}</TableCell>
                 <TableCell>
