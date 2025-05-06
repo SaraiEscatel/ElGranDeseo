@@ -10,6 +10,7 @@ import { CartProvider } from "./components/cartContext";
 import Carrito from "./components/carrito";
 import Admin from "./page/inventario/admin";
 import CrearProducto from "./page/inventario/crearProducto";
+import Ventas from "./page/inventario/Ventas";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/crearProducto" element={<CrearProducto />} />
+          <Route path="/ventas" element={<Ventas />} />
         </Routes>
       </CartProvider>
     </BrowserRouter>
