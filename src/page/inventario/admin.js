@@ -85,7 +85,7 @@ const Admin = () => {
       p.descripcion,
       p.costo,
       p.precio,
-      p.stock,
+      p.cantidad,
     ]);
     doc.autoTable({
       head: [columnas],
@@ -143,7 +143,7 @@ const Admin = () => {
               <TableCell>Descripción</TableCell>
               <TableCell>Costo ($)</TableCell>
               <TableCell>Precio ($)</TableCell>
-              <TableCell>Stock</TableCell>
+              <TableCell>Cantidad</TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
@@ -156,7 +156,7 @@ const Admin = () => {
                 <TableCell>{producto.descripcion}</TableCell>
                 <TableCell>{producto.costo}</TableCell>
                 <TableCell>{producto.precio}</TableCell>
-                <TableCell>{producto.stock}</TableCell>
+                <TableCell>{producto.cantidad}</TableCell>
                 <TableCell>
                   <Button
                     size="small"

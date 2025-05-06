@@ -9,7 +9,7 @@ const ProductoForm = ({ onUpdate, producto, editando }) => {
     tipo: "",
     descripcion: "",
     precio: "",
-    stock: "",
+    cantidad: "",
     imagen: "",
   });
 
@@ -62,7 +62,7 @@ const ProductoForm = ({ onUpdate, producto, editando }) => {
       tipo: "",
       descripcion: "",
       precio: "",
-      stock: "",
+      cantidad: "",
       imagen: "",
     });
   };
@@ -118,8 +118,8 @@ const ProductoForm = ({ onUpdate, producto, editando }) => {
       <TextField
         fullWidth
         margin="dense"
-        label="Stock"
-        name="stock"
+        label="Cantidad"
+        name="cantidad"
         type="number"
         value={formData.stock}
         onChange={handleChange}
