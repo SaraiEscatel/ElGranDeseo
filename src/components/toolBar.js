@@ -1,44 +1,34 @@
-import React, { useState } from "react";
-import {
-  AppBar,
-  IconButton,
-  Toolbar,
-  Box,
-  Typography,
-  Button,
-  Badge,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { AppBar, IconButton, Toolbar, Box, Button, Badge } from "@mui/material";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "./cartContext";
-import { useLocation } from "react-router-dom";
 
-const MyButton = ({ text, to, onClick }) => {
-  return (
-    <Button
-      component={to ? Link : "button"}
-      to={to}
-      onClick={onClick}
-      variant="h6"
-      sx={{
-        flexGrow: 1,
-        color: "black",
-        fontSize: 23,
-        fontWeight: 60,
-        ml: 5,
-        textTransform: "none",
-      }}
-    >
-      {text}
-    </Button>
-  );
-};
+const MyButton = ({ text, to, onClick }) => (
+  <Button
+    component={to ? Link : "button"}
+    to={to}
+    onClick={onClick}
+    variant="h6"
+    sx={{
+      flexGrow: 1,
+      color: "black",
+      fontSize: 23,
+      fontWeight: 60,
+      ml: 5,
+      textTransform: "none",
+    }}
+  >
+    {text}
+  </Button>
+);
 
 const MyToolBar = () => {
-  const [mostrarCarrito, setMostrarCarrito] = useState(false);
+  const [visible, setVisible] = useState(false);
   const { cartItems } = useCart();
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleOpenCarrito = () => {
     window.open("/carrito", "_blank");
@@ -50,16 +40,40 @@ const MyToolBar = () => {
     window.location.reload();
   };
 
-  const [hover, setHover] = useState(false);
+  // Mostrar barra al mover el mouse en la parte superior
+  useEffect(() => {
+    let timeout;
 
-  const location = useLocation();
+    const handleMouseMove = (e) => {
+      if (e.clientY <= 100) {
+        // Solo se muestra si el mouse está dentro de los primeros 100px
+        setVisible(true);
+        clearTimeout(timeout);
+        timeout = setTimeout(() => setVisible(false), 3000); // Ocultar después de 3s
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <AppBar
-      position="static"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      sx={{ backgroundColor: "#d9dad8", height: "13vh" }}
+      position="fixed"
+      sx={{
+        backgroundColor: "#d9dad8",
+        height: "13vh",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.5s ease-in-out",
+        pointerEvents: visible ? "auto" : "none", // Desactiva los clics cuando está oculto
+        width: "100%",
+        top: 0,
+        left: 0,
+      }}
     >
       <Toolbar>
         <Box
@@ -87,14 +101,12 @@ const MyToolBar = () => {
             alignContent: "center",
             ml: 2,
             mt: 4,
-            opacity: hover ? 1 : 0,
-            transition: "opacity 0.5s ease-in-out",
           }}
         >
           <MyButton text="Inicio" to="/" />
           <MyButton text="Productos" to="/productos" />
           <MyButton text="Nosotros" to="/nosotros" />
-          <MyButton text="Pedidos" to="/pedidos" />
+          <MyButton text="Diseñar" to="/pedidos" />
           {!usuario ? (
             <>
               <MyButton text="Iniciar Sesión" to="/login" />

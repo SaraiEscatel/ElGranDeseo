@@ -1,66 +1,96 @@
 import React, { useState } from "react";
 import {
-  Drawer,
+  AppBar,
+  Box,
+  Toolbar,
   IconButton,
+  Typography,
+  Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
-  Divider,
-  AppBar,
-  Toolbar,
-  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useNavigate } from "react-router-dom";
 
-const Menu = ({ onNavigate }) => {
-  const [open, setOpen] = useState(false);
+const Menu = () => {
+  const [abierto, setAbierto] = useState(false);
+  const navegar = useNavigate();
 
-  const toggleDrawer = () => {
-    setOpen(!open);
+  const toggleDrawer = (open) => () => {
+    setAbierto(open);
   };
 
-  const handleItemClick = (ruta) => {
-    setOpen(false);
-    onNavigate(ruta);
-  };
+  const opciones = [
+    { texto: "Inicio", ruta: "/" },
+    { texto: "Inventario", ruta: "/admin" },
+    { texto: "Ventas del Día", ruta: "/ventas" },
+    { texto: "Salir", ruta: "/login" },
+  ];
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar sx={{ width: "100%", backgroundColor: "#fff" }}>
-          <IconButton color="#fff" onClick={toggleDrawer} edge="start">
-            <MenuIcon />
+      <AppBar
+        position="fixed"
+        sx={{
+          backgroundColor: "transparent",
+          boxShadow: "none",
+          top: 0,
+          left: 0,
+          right: 0,
+        }}
+      >
+        <Toolbar sx={{ paddingLeft: 0, minHeight: "48px" }}>
+          <IconButton
+            edge="start"
+            onClick={toggleDrawer(true)}
+            sx={{
+              marginLeft: 0,
+              padding: "4px",
+            }}
+          >
+            <MenuIcon sx={{ color: "#000" }} />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1, color: "#000" }}>
-            Inventario
+          <Typography
+            variant="h6"
+            component="div"
+            color="#000"
+            sx={{ fontSize: 15, marginLeft: 1 }}
+          >
+            Joyería de Plata - Panel Admin
           </Typography>
         </Toolbar>
       </AppBar>
 
-      <Drawer anchor="left" open={open} onClose={toggleDrawer}>
-        <List>
-          <ListItem button onClick={() => handleItemClick("inicio")}>
-            <HomeIcon sx={{ marginRight: 1 }} />
-            <ListItemText primary="Inicio" />
-          </ListItem>
-          <ListItem button onClick={() => handleItemClick("inventario")}>
-            <InventoryIcon sx={{ marginRight: 1 }} />
-            <ListItemText primary="Inventario" />
-          </ListItem>
-          <ListItem button onClick={() => handleItemClick("ventas")}>
-            <PointOfSaleIcon sx={{ marginRight: 1 }} />
-            <ListItemText primary="Ventas del Día" />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={() => handleItemClick("salir")}>
-            <ExitToAppIcon sx={{ marginRight: 1 }} />
-            <ListItemText primary="Salir" />
-          </ListItem>
-        </List>
+      <Drawer anchor="left" open={abierto} onClose={toggleDrawer(false)}>
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+        >
+          <List>
+            {opciones.map((opcion) => (
+              <ListItem key={opcion.texto} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    if (opcion.texto === "Salir") {
+                      localStorage.clear();
+                      alert("Has cerrado sesión correctamente.");
+                      setTimeout(() => {
+                        navegar(opcion.ruta);
+                      }, 1500);
+                    } else {
+                      navegar(opcion.ruta);
+                    }
+                  }}
+                >
+                  <ListItemText primary={opcion.texto} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Drawer>
     </>
   );
