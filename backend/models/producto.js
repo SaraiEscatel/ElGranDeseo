@@ -23,7 +23,7 @@ const productoSchema = new mongoose.Schema(
     },
     cantidad: {
       type: Number,
-      default: 0,
+      required: true
     },
     imagen: {
       type: String,
