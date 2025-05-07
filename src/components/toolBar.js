@@ -40,16 +40,14 @@ const MyToolBar = () => {
     window.location.reload();
   };
 
-  // Mostrar barra al mover el mouse en la parte superior
   useEffect(() => {
     let timeout;
 
     const handleMouseMove = (e) => {
       if (e.clientY <= 100) {
-        // Solo se muestra si el mouse está dentro de los primeros 100px
         setVisible(true);
         clearTimeout(timeout);
-        timeout = setTimeout(() => setVisible(false), 3000); // Ocultar después de 3s
+        timeout = setTimeout(() => setVisible(false), 3000);
       }
     };
 
@@ -69,13 +67,13 @@ const MyToolBar = () => {
         height: "13vh",
         opacity: visible ? 1 : 0,
         transition: "opacity 0.5s ease-in-out",
-        pointerEvents: visible ? "auto" : "none", // Desactiva los clics cuando está oculto
+        pointerEvents: visible ? "auto" : "none",
         width: "100%",
         top: 0,
         left: 0,
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ fontFamily: "ITC Benguiat" }}>
         <Box
           sx={{
             width: "80px",
@@ -95,12 +93,14 @@ const MyToolBar = () => {
 
         <Box
           sx={{
-            flexGrow: 1,
+            flexGrow: 0.5,
             display: "flex",
+            alignItems: "center",
+            gap: 2,
             justifyContent: "center",
-            alignContent: "center",
-            ml: 2,
-            mt: 4,
+            fontFamily: "ITC Benguiat",
+            mt: 3,
+            ml: 25,
           }}
         >
           <MyButton text="Inicio" to="/" />
@@ -121,7 +121,7 @@ const MyToolBar = () => {
           {location.pathname !== "/register" && (
             <IconButton
               edge="end"
-              sx={{ color: "#101010", fontSize: 50, mt: -2 }}
+              sx={{ color: "#101010", fontSize: 50, mt: -2, ml: 30 }}
               onClick={handleOpenCarrito}
             >
               <Badge
