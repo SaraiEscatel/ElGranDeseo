@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
 const productoRoutes = require("./routes/productoRoutes");
-
+const ventasRoutes = require("./routes/ventasRoutes")
 
 // Middleware
 app.use(cors());
@@ -25,6 +25,7 @@ mongoose
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes); // <--- Montamos las rutas de usuario/login
 app.use("/api", productoRoutes); // Ruta para productos
+app.use("/api", ventasRoutes);
 
 // Middleware global de errores
 app.use((err, req, res, next) => {
